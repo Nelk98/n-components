@@ -4,10 +4,12 @@
       <n-loading></n-loading>
     </div>
     <div class="component-wrapper">
-      <n-drag :list="list" :height="150" ref="dragBox">
+      <button @click="handleNew">点我+1</button>
+      <button @click="handleCheck">查看序列</button>
+      <n-drag :list="list" :height="30" :column="5" ref="dragBox">
         <template v-for="(item, index) in list">
           <n-drag-item :key="index" class="bg">
-            <div class="item">{{index}}</div>
+            <div class="item">{{item.title}}</div>
           </n-drag-item>
         </template>
       </n-drag>
@@ -41,6 +43,15 @@ export default {
         // {title: '总部场测满意度得分'},
       ],
     }
+  },
+  methods: {
+    handleNew() {
+      this.list.push({title: '？？'})
+      this.$refs.dragBox.newItem()
+    },
+    handleCheck() {
+      console.log(this.list)
+    }
   }
 }
 </script>
@@ -54,6 +65,10 @@ export default {
 .item {
   height: 100%;
   width: 100%;
-  /* background: url('https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1091405991,859863778&fm=26&gp=0.jpg') center/cover; */
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #0b86fa;
+  padding: 0 6px;
+  box-sizing: border-box;
 }
 </style>

@@ -39,10 +39,9 @@ export default {
   },
   methods: {
     down(index, event) {
-      console.log(event)
-      ;[innerX, innerY] = [event.offsetX, event.offsetY]
+      [innerX, innerY] = [event.offsetX, event.offsetY]
       this.target_index = index
-      console.log('从', this.target_index, '出发')
+      // console.log('从', this.target_index, '出发')
       // let el = event.srcElement ? event.srcElement : event.target
       let i = this.list.findIndex(item => item.index == index)
       let el = [].slice.call(this.$refs.dragBox.children)[i]
@@ -83,9 +82,6 @@ export default {
           if(item.index == from) {
             item.index = to
             this.target_index = to //改变出发点
-            if(from > to) console.log('from 前进')
-            else if (from < to) console.log('from 后退')
-            else return console.log('位置没发生变化')
           } 
           else if (item.index == to) {
             if(to > from) {
@@ -116,11 +112,9 @@ export default {
       document.removeEventListener('mousemove', this.move)
       document.removeEventListener('mouseup', this.up)
       this.isDrag = false
-      console.log('释放了')
       this.release()
       this.target.style.zIndex = 0
       this.target.style.transition = ''
-      // this.target.style.background = ''
       this.target.style.cursor = 'default'
     },
     Animate() {
@@ -156,6 +150,7 @@ export default {
           break
         }
       }
+      // this.$emit('sort', this.list) //直接从外部获取list
     },
     initLayout() {
       outerTop = this.$refs.dragBox.offsetTop
@@ -176,9 +171,10 @@ export default {
           e.stopPropagation()
           this.down(this.list[index].index, e)
         })
+        let i = this.list[index].index
         el.style.width = itemWidth + 'px'
-        let y = Math.ceil((index + 1) / this.column) - 1
-        let x = index % this.column
+        let y = Math.ceil((i + 1) / this.column) - 1
+        let x = i % this.column
         let top = this.gap * (y + 1) + this.height * y
         let left = this.gap * (x + 1) + itemWidth * x
         el.style.height = this.height + 'px'
@@ -190,6 +186,14 @@ export default {
     resize() {
       if(initTimer) clearTimeout(initTimer)
       initTimer = setTimeout(this.initLayout, 30)
+    },
+    newItem() {
+      this.list.forEach((item, index) => {
+        if (Object.keys(item).indexOf('index') == -1) {
+          item.index = index
+        }
+      })
+      setTimeout(this.initLayout, 0)
     }
   },
   created() {
