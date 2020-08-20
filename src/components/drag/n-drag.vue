@@ -39,6 +39,7 @@ export default {
   },
   methods: {
     down(index, event) {
+      console.log(event);
       [innerX, innerY] = [event.offsetX, event.offsetY]
       this.target_index = index
       // console.log('从', this.target_index, '出发')
@@ -55,7 +56,8 @@ export default {
       document.addEventListener('mouseup', this.up)
     },
     move(event) {
-      [outerX, outerY] = [event.clientX - outerLeft, Math.abs(event.clientY) - outerTop]
+      console.log(event);
+      [outerX, outerY] = [event.pageX - outerLeft, Math.abs(event.pageY) - outerTop]
       let top = outerY - innerY
       top = top > 0 ? top : 0
       top = top > bottom ? bottom : top
@@ -155,6 +157,7 @@ export default {
     initLayout() {
       outerTop = this.$refs.dragBox.offsetTop
       outerLeft = this.$refs.dragBox.offsetLeft
+      console.log(outerLeft, outerTop)
       let boxWidth = this.$refs.dragBox.clientWidth //盒子宽度
       row = Math.ceil(this.list.length / this.column) //至少多少行
       let boxHeight = row * this.height + (row + 1) * this.gap //盒子高度

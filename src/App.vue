@@ -58,7 +58,7 @@ export default {
 
 <style>
 .component-wrapper {
-  padding: 20px;
+  padding: 200px;
   margin: 20px auto;
   box-shadow: 0 0 12px rgba(51, 51, 51, .18);
 }
